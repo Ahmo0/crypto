@@ -181,39 +181,88 @@ export default function SupportCategories() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-[#050811] py-28">
-      <div className="pointer-events-none absolute left-1/2 top-20 h-[600px] w-[800px] -translate-x-1/2 rounded-full bg-cyan-500/[0.025] blur-[160px]" />
+    <section className="relative overflow-hidden bg-[#050811] py-16 sm:py-20 lg:py-28">
+      {/* Background glow */}
+      <div className="pointer-events-none absolute left-1/2 top-20 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-cyan-500/[0.025] blur-[160px] sm:h-[600px] sm:w-[800px]" />
 
-      <div className="relative mx-auto max-w-[1500px] px-6 sm:px-8 lg:px-10">
+      <div className="relative mx-auto w-full max-w-[1500px] px-4 sm:px-6 md:px-8 lg:px-10">
         {categories.map((category) => (
-          <div key={category.title} className="mb-20 last:mb-0">
-            <div className="mb-10 flex justify-center">
-              <div className="inline-flex min-h-[58px] items-center justify-center rounded-full border border-cyan-400/20 bg-cyan-400/[0.035] px-8 py-3 text-lg font-semibold tracking-wide text-cyan-300 shadow-[0_0_25px_rgba(34,211,238,0.05)]">
+          <div
+            key={category.title}
+            className="mb-16 last:mb-0 sm:mb-20"
+          >
+            {/* Category title */}
+            <div className="mb-7 flex justify-center px-2 sm:mb-9">
+              <div className="inline-flex min-h-[48px] max-w-full items-center justify-center rounded-full border border-cyan-400/20 bg-cyan-400/[0.035] px-5 py-2.5 text-center text-sm font-semibold tracking-wide text-cyan-300 shadow-[0_0_25px_rgba(34,211,238,0.05)] sm:min-h-[54px] sm:px-7 sm:py-3 sm:text-base lg:text-lg">
                 {category.title}
               </div>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {/* Responsive card layout */}
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-5 lg:gap-6">
               {category.items.map((item) => (
                 <div
                   key={item.title}
-                  className="group rounded-2xl border border-slate-800/80 bg-[#080e19]/80 p-7 transition duration-300 hover:-translate-y-1 hover:border-cyan-400/25 hover:bg-[#0a111e] hover:shadow-[0_15px_50px_rgba(34,211,238,0.06)]"
+                  className="
+                    group
+                    flex
+                    min-h-[185px]
+                    w-full
+                    flex-col
+                    items-center
+                    justify-center
+                    rounded-2xl
+                    border
+                    border-slate-800/80
+                    bg-[#080e19]/80
+                    px-7
+                    py-5
+                    text-center
+                    transition
+                    duration-300
+                    hover:-translate-y-1
+                    hover:border-cyan-400/25
+                    hover:bg-[#0a111e]
+                    hover:shadow-[0_15px_50px_rgba(34,211,238,0.06)]
+                    sm:min-h-[200px]
+                    sm:w-[calc(50%-10px)]
+                    sm:px-8
+                    sm:py-6
+                    lg:w-[calc(33.333%-16px)]
+                    lg:px-9
+                    lg:py-7
+                  "
                 >
-                  <h3 className="text-xl font-bold text-slate-100 transition group-hover:text-cyan-300">
+                  {/* Card title */}
+                  <h3 className="w-full text-center text-lg font-bold leading-6 text-slate-100 transition group-hover:text-cyan-300 sm:text-xl">
                     {item.title}
                   </h3>
 
-                  <p className="mt-4 text-[16px] leading-7 text-slate-400">
+                  {/* Card description */}
+                  <p className="mt-3 w-full text-center text-sm leading-6 text-slate-400 sm:mt-4 sm:text-[15px] sm:leading-7 lg:text-[16px]">
                     {item.description}
                   </p>
 
+                  {/* Learn more */}
                   <button
-  type="button"
-  onClick={() => navigate("/connect-wallet")}
-  className="mt-6 inline-block text-sm font-semibold text-cyan-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
->
-  Learn more →
-</button>
+                    type="button"
+                    onClick={() => navigate("/connect-wallet")}
+                    className="
+                      mt-5
+                      w-full
+                      text-center
+                      text-sm
+                      font-semibold
+                      text-cyan-400
+                      opacity-100
+                      transition-opacity
+                      duration-300
+                      sm:opacity-0
+                      sm:group-hover:opacity-100
+                    "
+                  >
+                    Learn more →
+                  </button>
                 </div>
               ))}
             </div>

@@ -1,10 +1,13 @@
 import { Check } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import CryptoTicker from "./CryptoTicker";
 
 export default function Hero() {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-[calc(100vh-100px)] overflow-hidden bg-[#050811]">
-      {/* BACKGROUND EFFECTSsssss */}
+      {/* BACKGROUND EFFECTS */}
 
       <div className="pointer-events-none absolute left-1/2 top-[8%] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-cyan-500/[0.055] blur-[150px]" />
 
@@ -16,7 +19,7 @@ export default function Hero() {
 
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(20,184,166,0.035),transparent_45%)]" />
 
-      {/*HERO CONTENT  */}
+      {/* HERO CONTENT */}
 
       <div className="relative mx-auto flex min-h-[calc(100vh-100px)] max-w-[1500px] flex-col items-center px-6 pb-24 pt-24 text-center sm:px-8 sm:pt-28 lg:px-10 lg:pt-24">
 
@@ -36,29 +39,28 @@ export default function Hero() {
           </div>
         </div>
 
-       {/* STATUS BADGE */}
+        {/* STATUS BADGE */}
 
-<div className="mb-10 flex min-h-[54px] items-center gap-4 rounded-full border border-cyan-400/20 bg-cyan-400/[0.035] px-7 py-3.5 shadow-[0_0_30px_rgba(34,211,238,0.05)] backdrop-blur-md">
+        <div className="mb-10 flex min-h-[54px] items-center gap-4 rounded-full border border-cyan-400/20 bg-cyan-400/[0.035] px-7 py-3.5 shadow-[0_0_30px_rgba(34,211,238,0.05)] backdrop-blur-md">
+          <span className="relative flex h-4 w-4 shrink-0">
+            <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 opacity-70" />
 
-  <span className="relative flex h-4 w-4 shrink-0">
-    <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400 opacity-70" />
+            <span className="absolute -inset-1 rounded-full bg-emerald-400/20 blur-sm" />
 
-    <span className="absolute -inset-1 rounded-full bg-emerald-400/20 blur-sm" />
+            <span className="relative h-4 w-4 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,1),0_0_20px_rgba(52,211,153,0.8)]" />
+          </span>
 
-    <span className="relative h-4 w-4 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,1),0_0_20px_rgba(52,211,153,0.8)]" />
-  </span>
+          <span className="whitespace-nowrap text-sm font-medium tracking-wide text-cyan-200 sm:text-base md:text-[17px]">
+            Now Live on Mainnet — Audit Passed
+          </span>
 
-  <span className="whitespace-nowrap text-sm font-medium tracking-wide text-cyan-200 sm:text-base md:text-[17px]">
-    Now Live on Mainnet — Audit Passed
-  </span>
+          <Check
+            className="h-5 w-5 shrink-0 text-emerald-400"
+            strokeWidth={2.5}
+          />
+        </div>
 
-  <Check
-    className="h-5 w-5 shrink-0 text-emerald-400"
-    strokeWidth={2.5}
-  />
-</div>
-
-        {/*  MAIN HEADING  */}
+        {/* MAIN HEADING */}
 
         <h1 className="max-w-[1250px] text-[64px] font-black leading-[0.94] tracking-[-0.055em] text-slate-100 sm:text-[76px] md:text-[88px] lg:text-[104px] xl:text-[112px]">
           <span className="block">
@@ -74,7 +76,7 @@ export default function Hero() {
           </span>
         </h1>
 
-        {/* DESCRIPTION  */}
+        {/* DESCRIPTION */}
 
         <p className="mt-9 max-w-[850px] text-[17px] leading-8 text-slate-400 sm:text-lg md:text-xl">
           Military-grade encryption, real-time threat detection, and
@@ -82,27 +84,84 @@ export default function Hero() {
           seamless DeFi integration — all in one shield.
         </p>
 
-        {/*  BUTTONS */}
+        {/* BUTTONS */}
 
-        <div className="mt-10 flex items-center justify-center gap-5">
+        <div className="mt-10 flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row sm:gap-5">
+
+          {/* CONNECT WALLET */}
+
           <button
             type="button"
-            className="flex min-h-[58px] min-w-[210px] items-center justify-center gap-3 rounded-xl bg-cyan-400 px-8 py-4 text-lg font-semibold text-[#050811] shadow-lg shadow-cyan-500/20 transition hover:scale-[1.02] hover:bg-cyan-300"
+            onClick={() => navigate("/connect-wallet")}
+            className="
+              flex
+              min-h-[58px]
+              w-full
+              items-center
+              justify-center
+              gap-3
+              rounded-xl
+              bg-cyan-400
+              px-8
+              py-4
+              text-lg
+              font-semibold
+              text-[#050811]
+              shadow-lg
+              shadow-cyan-500/20
+              transition
+              hover:scale-[1.02]
+              hover:bg-cyan-300
+              sm:w-auto
+              sm:min-w-[210px]
+            "
           >
             Connect Wallet
           </button>
 
+          {/* EXPLORE FEATURES */}
+
           <button
             type="button"
-            className="min-h-[58px] min-w-[210px] rounded-xl border border-slate-700 bg-[#0b111d] px-8 py-4 text-lg font-semibold text-slate-100 transition hover:border-slate-500 hover:bg-[#101827]"
+            onClick={() =>
+              document
+                .getElementById("features")
+                ?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                })
+            }
+            className="
+              flex
+              min-h-[58px]
+              w-full
+              items-center
+              justify-center
+              rounded-xl
+              border
+              border-slate-700
+              bg-[#0b111d]
+              px-8
+              py-4
+              text-lg
+              font-semibold
+              text-slate-100
+              transition
+              hover:border-slate-500
+              hover:bg-[#101827]
+              sm:w-auto
+              sm:min-w-[210px]
+            "
           >
             Explore Features
           </button>
         </div>
-{/*  CRYPTO TICKER  */}
 
-<CryptoTicker />
-        {/*  SUBTLE BOTTOM ACCENT  */}
+        {/* CRYPTO TICKER */}
+
+        <CryptoTicker />
+
+        {/* SUBTLE BOTTOM ACCENT */}
 
         <div className="mt-16 h-px w-40 bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent" />
       </div>
