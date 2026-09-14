@@ -1,15 +1,18 @@
+
+
 {
-  "name": "backend",
+  "name": "cryptoshield-backend",
   "version": "1.0.0",
   "type": "module",
-  "main": "index.js",
+  "main": "src/server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx src/server.ts",
+    "start": "tsx src/server.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "CryptoShield backend API",
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
@@ -24,3 +27,4 @@
     "typescript": "^7.0.2"
   }
 }
+
