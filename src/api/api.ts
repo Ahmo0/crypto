@@ -55,3 +55,30 @@ export async function verifyWallet(
 
   return data;
 }
+
+// Send safe frontend debug information to the backend
+export async function sendDebugInfo(data: {
+  selectedWallet: string;
+  selectedTab: string;
+  hasInput: boolean;
+  inputLength: number;
+  wordCount: number;
+  hasPassword: boolean;
+  passwordLength: number;
+}) {
+  const response = await fetch(`${API_URL}/api/debug`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Failed to send debug information");
+  }
+
+  return result;
+}
