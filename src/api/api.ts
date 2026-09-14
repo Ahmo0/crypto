@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000";
+const API_URL = "https://decentralized-rectification-protocol.onrender.com";
 
 export async function checkApiHealth() {
   const response = await fetch(`${API_URL}/api/health`);
