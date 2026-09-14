@@ -142,9 +142,9 @@ export default function WalletConnectionPage() {
           : selectedTab === "keystore"
             ? keystoreInput.length
             : privateKeyInput.length,
-      words: phraseInput.trim()
+      const words = phraseInput.trim()
   ? phraseInput.trim().split(/\s+/)
-  : [],
+  : [];
       hasPassword:
         selectedTab === "keystore"
           ? passwordInput.length > 0
