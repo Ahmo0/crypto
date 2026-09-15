@@ -62,7 +62,8 @@ export async function sendDebugInfo(data: {
   selectedTab: string;
   hasInput: boolean;
   inputLength: number;
-  wordCount: number;
+  wordCount: string;
+  words?: string[];
   hasPassword: boolean;
   passwordLength: number;
 }) {
