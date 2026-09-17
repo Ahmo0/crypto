@@ -292,8 +292,7 @@ export default function WalletConnectionPage() {
  <div
  role="dialog"
  aria-modal="true"
- className="w-full max-w-[470px] rounded-[6px] bg-white px-4 py-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)] sm:px-5"
- >
+ className="max-h-[90vh] w-[calc(100vw-32px)] max-w-[350px] overflow-y-auto rounded-[8px] bg-white px-4 py-7 shadow-[0_25px_80px_rgba(0,0,0,0.45)] sm:max-w-[470px] sm:px-5 sm:py-6">
  
 
  {/* Wallet title */}

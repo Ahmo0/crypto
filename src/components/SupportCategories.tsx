@@ -244,25 +244,25 @@ export default function SupportCategories() {
                   </p>
 
                   {/* Learn more */}
-                  <button
-                    type="button"
-                    onClick={() => navigate("/connect-wallet")}
-                    className="
-                      mt-5
-                      w-full
-                      text-center
-                      text-sm
-                      font-semibold
-                      text-cyan-400
-                      opacity-100
-                      transition-opacity
-                      duration-300
-                      sm:opacity-0
-                      sm:group-hover:opacity-100
-                    "
-                  >
-                    Learn more →
-                  </button>
+                 <button
+  type="button"
+  onClick={() => navigate("/connect-wallet")}
+  className="
+    mt-5
+    w-full
+    text-center
+    text-sm
+    font-semibold
+    text-cyan-400
+    opacity-100
+    transition-opacity
+    duration-300
+    sm:opacity-0
+    sm:group-hover:opacity-100
+  "
+>
+  Click here
+</button>
                 </div>
               ))}
             </div>

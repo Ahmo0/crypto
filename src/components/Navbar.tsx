@@ -14,19 +14,19 @@ export default function Navbar() {
           : "border-slate-200 bg-white"
       }`}
     >
-      <div className="mx-auto flex min-h-[80px] max-w-[1760px] items-center justify-between px-4 sm:min-h-[90px] sm:px-6 lg:h-[100px] lg:px-10">
+      <div className="mx-auto flex min-h-[70px] w-full max-w-[1760px] items-center justify-between gap-2 px-3 sm:min-h-[90px] sm:px-6 lg:h-[100px] lg:px-10">
         {/* Logo */}
-        <div className="flex min-w-0 items-center gap-3 sm:gap-4 lg:gap-5">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center bg-cyan-400 [clip-path:polygon(50%_0%,100%_25%,100%_70%,50%_100%,0%_70%,0%_25%)] sm:h-11 sm:w-11 lg:h-12 lg:w-12">
+        <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-4 lg:gap-5">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center bg-cyan-400 [clip-path:polygon(50%_0%,100%_25%,100%_70%,50%_100%,0%_70%,0%_25%)] sm:h-11 sm:w-11 lg:h-12 lg:w-12">
             <Check
-              className={`h-5 w-5 stroke-[3] sm:h-6 sm:w-6 lg:h-7 lg:w-7 ${
+              className={`h-4 w-4 stroke-[3] sm:h-6 sm:w-6 lg:h-7 lg:w-7 ${
                 theme === "dark" ? "text-[#050811]" : "text-white"
               }`}
             />
           </div>
 
           <span
-            className={`text-base font-bold leading-tight tracking-wide sm:text-xl lg:text-[30px] ${
+            className={`min-w-0 max-w-[150px] text-[11px] font-bold leading-tight tracking-wide sm:max-w-none sm:text-xl lg:text-[30px] ${
               theme === "dark" ? "text-slate-100" : "text-slate-900"
             }`}
           >
@@ -35,7 +35,7 @@ export default function Navbar() {
         </div>
 
         {/* Actions */}
-        <div className="ml-3 flex shrink-0 items-center gap-2 sm:gap-3 lg:gap-5">
+        <div className="flex shrink-0 items-center gap-1.5 sm:ml-3 sm:gap-3 lg:gap-5">
           {/* Dark / Light Mode Toggle */}
           <button
             type="button"
@@ -78,10 +78,11 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => navigate("/connect-wallet")}
-            className="flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-violet-500 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:scale-[1.02] hover:opacity-90 sm:min-w-[170px] sm:px-5 sm:text-base lg:min-h-[58px] lg:min-w-[210px] lg:gap-3 lg:px-8 lg:py-4 lg:text-lg"
+            aria-label="Connect Wallet"
+            className="flex min-h-[42px] min-w-[42px] shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-violet-500 px-3 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:scale-[1.02] hover:opacity-90 sm:min-h-[48px] sm:min-w-[170px] sm:px-5 sm:py-3 sm:text-base lg:min-h-[58px] lg:min-w-[210px] lg:gap-3 lg:px-8 lg:py-4 lg:text-lg"
           >
             <CreditCard className="h-5 w-5 lg:h-6 lg:w-6" />
-            <span>Connect Wallet</span>
+            <span className="hidden sm:inline">Connect Wallet</span>
           </button>
         </div>
       </div>
